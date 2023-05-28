@@ -23,35 +23,36 @@ function App() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "User": "user",
       },
-      body: JSON.stringify({
-        chats,
-      }),
+      body: JSON.stringify(
+        {message: message},
+      ),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        return response.json()
+      })
       .then((data) => {
-        msgs.push(data.output);
+        msgs.push({ role: "assitent", content: data.reply });
         setChats(msgs);
         setIsTyping(false);
         scrollTo(0, 1e10);
+
       })
       .catch((error) => {
         console.log(error);
       });
+
   };
 
   return (
     <main>
-      <h1>FullStack Chat AI Tutorial</h1>
+      <h1> Olá eu sou o Edu e vou te ajudar! </h1>
 
       <section>
         {chats && chats.length
           ? chats.map((chat, index) => (
               <p key={index} className={chat.role === "user" ? "user_msg" : ""}>
-                <span>
-                  <b>{chat.role.toUpperCase()}</b>
-                </span>
-                <span>:</span>
                 <span>{chat.content}</span>
               </p>
             ))
@@ -69,7 +70,7 @@ function App() {
           type="text"
           name="message"
           value={message}
-          placeholder="Type a message here and hit Enter..."
+          placeholder="Digite aqui..."
           onChange={(e) => setMessage(e.target.value)}
         />
       </form>
